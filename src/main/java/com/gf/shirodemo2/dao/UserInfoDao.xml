@@ -22,4 +22,8 @@
 
     </select>
 
+    <select id="findUserList" resultType="com.gf.shirodemo2.bean.UserInfo">
+  select *  from UserInfo
+    </select>
+
 </mapper>

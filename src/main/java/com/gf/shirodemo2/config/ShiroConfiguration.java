@@ -50,6 +50,8 @@ public class ShiroConfiguration {
         //拦截器.
         Map<String,String> filterChainDefinitionMap = new LinkedHashMap<String,String>();
 
+        filterChainDefinitionMap.put("/favicon.ico", "anon");
+        filterChainDefinitionMap.put("/static/**", "anon");
 
         //配置退出过滤器,其中的具体的退出代码Shiro已经替我们实现了
         filterChainDefinitionMap.put("/logout", "logout");
@@ -58,7 +60,7 @@ public class ShiroConfiguration {
         //<!-- authc:所有url都必须认证通过才可以访问; anon:所有url都都可以匿名访问-->
         filterChainDefinitionMap.put("/**", "authc");
 
-        filterChainDefinitionMap.put("/static/**", "anon");
+
         // 如果不设置默认会自动寻找Web工程根目录下的"/login.jsp"页面
         shiroFilterFactoryBean.setLoginUrl("/login");
         // 登录成功后要跳转的链接
