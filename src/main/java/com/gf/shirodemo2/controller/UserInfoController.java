@@ -23,9 +23,15 @@ public class UserInfoController {
     @RequestMapping("/userList")
     public String userInfo(Model model){
 
-        Page<UserInfo> page = new Page<UserInfo>(1,5);
-        IPage<UserInfo> userlist = userInfoService.findUserList(page);
-        model.addAttribute("userList",userlist);
+
+        try {
+            Page<UserInfo> page = new Page<UserInfo>(1,5);
+            IPage<UserInfo> userlist = userInfoService.page(page);
+//            IPage<UserInfo> userlist = userInfoService.findUserList(page);
+            model.addAttribute("userList",userlist);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return "user/userList";
     }
 

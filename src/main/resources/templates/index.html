@@ -10,9 +10,9 @@
 <meta name="keywords" content="LightYear,光年,后台模板,后台管理系统,光年HTML模板">
 <meta name="description" content="LightYear是一个基于Bootstrap v3.3.7的后台管理系统的HTML模板。">
 <meta name="author" content="yinqi">
-<link href="css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}"  rel="stylesheet">
-<link href="css/materialdesignicons.min.css" th:href="@{/css/materialdesignicons.min.css}" rel="stylesheet">
-<link href="css/style.min.css" th:href="@{/css/style.min.css}" rel="stylesheet">
+<link href="css/bootstrap.min.css" th:href="@{/static/css/bootstrap.min.css}"  rel="stylesheet">
+<link href="css/materialdesignicons.min.css" th:href="@{/static/css/materialdesignicons.min.css}" rel="stylesheet">
+<link href="css/style.min.css" th:href="@{/static/css/style.min.css}" rel="stylesheet">
 </head>
   
 <body>
@@ -242,13 +242,13 @@
   </div>
 </div>
 
-<script type="text/javascript" src="js/jquery.min.js"></script>
-<script type="text/javascript" src="js/bootstrap.min.js"></script>
-<script type="text/javascript" src="js/perfect-scrollbar.min.js"></script>
-<script type="text/javascript" src="js/main.min.js"></script>
+<script type="text/javascript" src="js/jquery.min.js" th:src="@{/static/js/jquery.min.js}"></script>
+<script type="text/javascript" src="js/bootstrap.min.js" th:src="@{/static/js/bootstrap.min.js}"></script>
+<script type="text/javascript" src="js/perfect-scrollbar.min.js" th:src="@{/static/js/perfect-scrollbar.min.js}"></script>
+<script type="text/javascript" src="js/main.min.js" th:src="@{/static/js/main.min.js}"></script>
 
 <!--图表插件-->
-<script type="text/javascript" src="js/Chart.js"></script>
+<script type="text/javascript" src="js/Chart.js" th:src="@{/static/js/Chart.js}"></script>
 <script type="text/javascript">
 $(document).ready(function(e) {
     var $dashChartBarsCnt  = jQuery( '.js-chartjs-bars' )[0].getContext( '2d' ),

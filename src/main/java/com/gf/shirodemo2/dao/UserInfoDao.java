@@ -1,5 +1,6 @@
 package com.gf.shirodemo2.dao;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.gf.shirodemo2.bean.SysPermission;
@@ -10,7 +11,7 @@ import org.apache.ibatis.annotations.Mapper;
 import java.util.List;
 
 @Mapper
-public interface UserInfoDao  {
+public interface UserInfoDao  extends BaseMapper<UserInfo>{
 
     public UserInfo findByUsername(String username);
 

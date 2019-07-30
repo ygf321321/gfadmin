@@ -1,11 +1,18 @@
 package com.gf.shirodemo2.bean;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.io.Serializable;
 import java.util.List;
 
+@TableName(value = "UserInfo")
 public class UserInfo implements Serializable {
     private static final long serialVersionUID = 1L;
 
+    @TableId(type = IdType.AUTO)
     private long uid;//用户id;
 
     private String username;//账号.
@@ -13,12 +20,15 @@ public class UserInfo implements Serializable {
     private String name;//名称（昵称或者真实姓名，不同系统不同定义）
 
     private String password; //密码;
+
+    @TableField(exist = false)
     private String salt;//加密密码的盐
 
-    private byte state;//用户状态,0:创建未认证（比如没有激活，没有输入验证码等等）--等待验证的用户 , 1:正常状态,2：用户被锁定.
+    private boolean state;//用户状态,0:创建未认证（比如没有激活，没有输入验证码等等）--等待验证的用户 , 1:正常状态,2：用户被锁定.
 
-
+@TableField(exist = false)
     private List<SysRole> roleList;// 一个用户具有多个角色
+
 
     public List<SysRole> getRoleList() {
         return roleList;
@@ -68,11 +78,11 @@ public class UserInfo implements Serializable {
         this.salt = salt;
     }
 
-    public byte getState() {
+    public boolean getState() {
         return state;
     }
 
-    public void setState(byte state) {
+    public void setState(boolean state) {
         this.state = state;
     }
 
