@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/static/bower_components/bootstrap/dist/css/bootstrap.min.css" th:href="@{/static/bower_components/bootstrap/dist/css/bootstrap.min.css}">
+    <link rel="stylesheet"  href="/static/bower_components/bootstrap-table/bootstrap-table.css" th:href="@{/static/bower_components/bootstrap-table/bootstrap-table.css}" rel="stylesheet">
+    <link rel="stylesheet"  href="https://cdnjs.cloudflare.com/ajax/libs/jquery-treegrid/0.2.0/css/jquery.treegrid.min.css" rel="stylesheet">
+
+</head>
+<body>
+
+
+
+设置搜索框按键触发是使用data-search-on-enter-key属性，默认是data-search-on-enter-key="false"，
+即输入内容自动进行搜索。将data-search-on-enter-key设置为true（data-search-on-enter-key="true"）后，
+搜索框将会在你按下Enter（回车）键之后进行搜索。
+
+设置搜索框默认搜索字符串使用data-search-text属性
+
+
+<!--<table data-toggle="table" data-search="true"-->
+       <!--data-method="post"-->
+       <!--&lt;!&ndash;data-url="/getData" &ndash;&gt;-->
+<!--&gt;-->
+    <!--<thead>-->
+    <!--<tr>-->
+        <!--<th data-field="id" data-sortable="true">学号</th>-->
+        <!--<th data-field="name">姓名</th>-->
+        <!--<th data-field="math">数学</th>-->
+        <!--<th data-field="chinese">语文</th>-->
+        <!--<th data-field="english">英语</th>-->
+        <!--<th data-field="biology">生物</th>-->
+        <!--<th data-field="physics">物理</th>-->
+        <!--<th data-field="chemistry">化学</th>-->
+        <!--<th data-field="politics">政治</th>-->
+        <!--<th data-field="geography">地理</th>-->
+        <!--<th data-field="history">历史</th>-->
+    <!--</tr>-->
+    <!--</thead>-->
+<!--</table>-->
+
+
+<table  id="ArbetTable">
+
+</table>
+
+
+
+
+
+<script src="/static/bower_components/jquery/dist/jquery.min.js" th:src="@{/static/bower_components/jquery/dist/jquery.min.js}"></script>
+
+<script src="/static/bower_components/bootstrap-table/bootstrap-table.js" th:src="@{/static/bower_components/bootstrap-table/bootstrap-table.js}"></script>
+
+<script src="/static/bower_components/bootstrap-table/locale/bootstrap-table-zh-CN.js" th:src="@{/static/bower_components/bootstrap-table/locale/bootstrap-table-zh-CN.js}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-treegrid/0.2.0/js/jquery.treegrid.min.js" ></script>
+<script src="/static/bower_components/bootstrap-table/extensions/treegrid/bootstrap-table-treegrid.js"></script>
+<script type="text/javascript">
+
+    //得到查询的参数
+     function  queryParams(params) {
+        var temp = {   //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
+            limit: limit,   //页面大小
+            offset:offset
+        };
+        return temp;
+    };
+
+
+    function operateFormatter(value, row, index) {//赋予的参数
+        return [
+            '<a class="btn active disabled" href="#">编辑</a>',
+            '<a class="btn active" href="#">档案</a>',
+            '<a class="btn btn-default" href="#">记录</a>',
+            '<a class="btn active" href="#">准入</a>'
+        ].join('');
+    }
+
+    $(document).ready(function () {
+        var $table= $('#ArbetTable');
+        $('#ArbetTable').bootstrapTable({
+            url: 'treegrid.json',
+            striped: true,
+            sidePagination: 'server',
+            idField: 'id',
+            showColumns: true,
+            columns: [
+                {
+                    field: 'ck',
+                    checkbox: true
+                },
+                {
+                    field: 'name',
+                    title: '名称'
+                },
+                {
+                    field: 'status',
+                    title: '状态',
+                    sortable: true,
+                    align: 'center',
+                    formatter: 'statusFormatter'
+                },
+                {
+                    field: 'permissionValue',
+                    title: '权限值'
+                }
+            ],
+            treeShowField: 'name',
+            parentIdField: 'pid',
+            onLoadSuccess: function(data) {
+                $table.treegrid({
+                    initialState: 'collapsed',
+                    treeColumn: 1,
+                    expanderExpandedClass: 'glyphicon glyphicon-minus',
+                    expanderCollapsedClass: 'glyphicon glyphicon-plus',
+                    onChange: function() {
+                        $table.bootstrapTable('resetWidth');
+                    }
+                });
+            },
+            onPostBody: function() {
+                var columns = $table.bootstrapTable('getOptions').columns;
+
+                if (columns && columns[0][1].visible) {
+                    $table.treegrid({
+                        treeColumn: 1,
+                        onChange: function() {
+                            $table.bootstrapTable('resetWidth');
+                        }
+                    });
+                }
+            }
+        });
+
+    });
+
+
+
+    function typeFormatter(value, row, index) {
+        if (value === 'menu') {
+            return '菜单'
+        }
+        if (value === 'button') {
+            return '按钮'
+        }
+        if (value === 'api') {
+            return '接口'
+        }
+        return '-'
+    }
+
+    function statusFormatter(value, row, index) {
+        if (value === '1') {
+            return '<span class="label label-success">正常</span>'
+        }
+        return '<span class="label label-default">锁定</span>'
+    }
+</script>
+
+
+</body>
+</html>
