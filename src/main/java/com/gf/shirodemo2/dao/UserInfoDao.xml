@@ -8,14 +8,14 @@
     </select>
 
 
-    <select id="findRoleListByUid" resultType="com.gf.shirodemo2.bean.SysRole">
+    <select id="findRoleListByUid" resultType="com.gf.shirodemo2.bean.SysRole1">
                       select sr.*   from SysRole sr
         left join SysUserRole sur on sr.id=sur.rid
         where sur.uid=#{uid}
 
     </select>
 
-    <select id="findPermissionListByRid" resultType="com.gf.shirodemo2.bean.SysPermission">
+    <select id="findPermissionListByRid" resultType="com.gf.shirodemo2.bean.SysPermission1">
             select sp.*   from SysPermission sp
         left join SysRolePermission srp on sp.id=srp.pid
         where srp.rid=#{rid}

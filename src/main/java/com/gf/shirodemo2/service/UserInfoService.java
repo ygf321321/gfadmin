@@ -3,18 +3,16 @@ package com.gf.shirodemo2.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.gf.shirodemo2.bean.SysRole;
+import com.gf.shirodemo2.bean.SysRole1;
 import com.gf.shirodemo2.bean.UserInfo;
 import com.gf.shirodemo2.dao.UserInfoDao;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.logging.Logger;
 
 @Service
-public class UserInfoService  extends ServiceImpl{
+public class UserInfoService  extends ServiceImpl<UserInfoDao,UserInfo>{
     @Autowired
     UserInfoDao userInfoDao;
 
@@ -22,9 +20,9 @@ public class UserInfoService  extends ServiceImpl{
         System.out.println("--------------findByUsername:"+username);
         UserInfo userInfo =userInfoDao.findByUsername(username);
         if (userInfo != null) {
-            List<SysRole> roleList=userInfoDao.findRoleListByUid(userInfo.getUid());
+            List<SysRole1> roleList=userInfoDao.findRoleListByUid(userInfo.getUid());
             if (roleList != null) {
-                for (SysRole sysRole : roleList) {
+                for (SysRole1 sysRole : roleList) {
                     sysRole.setPermissions(userInfoDao.findPermissionListByRid(sysRole.getId()));
 
                 }

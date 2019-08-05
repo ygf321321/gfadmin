@@ -3,8 +3,8 @@ package com.gf.shirodemo2.dao;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.gf.shirodemo2.bean.SysPermission;
-import com.gf.shirodemo2.bean.SysRole;
+import com.gf.shirodemo2.bean.SysPermission1;
+import com.gf.shirodemo2.bean.SysRole1;
 import com.gf.shirodemo2.bean.UserInfo;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -15,9 +15,9 @@ public interface UserInfoDao  extends BaseMapper<UserInfo>{
 
     public UserInfo findByUsername(String username);
 
-    public List<SysRole> findRoleListByUid(Long uid);
+    public List<SysRole1> findRoleListByUid(String uid);
 
-    public List<SysPermission> findPermissionListByRid(Long rid);
+    public List<SysPermission1> findPermissionListByRid(Long rid);
 
     /**
      * <p>

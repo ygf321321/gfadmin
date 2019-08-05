@@ -1,82 +1,170 @@
 package com.gf.shirodemo2.bean;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
-public class SysPermission implements Serializable{
+public class SysPermission implements Serializable {
     private static final long serialVersionUID = 1L;
+    @TableId(type = IdType.UUID)
+    private String id;
+    private  String name;
 
-    private long id;//主键.
-    private String name;//名称.
+    private String pid;
+    private int zindex;
+    private String type;
+    private  String code;
+    private  String descrpt;
+    private String icon;
+    private String url;
+    private  String path;
+    private String state;
 
-//    @Column(columnDefinition="enum('menu','button')")
-    private String resourceType;//资源类型，[menu|button]
-    private String url;//资源路径.
-    private String permission; //权限字符串,menu例子：role:*，button例子：role:create,role:update,role:delete,role:view
-    private Long parentId; //父编号
-    private String parentIds; //父编号列表
-    private Boolean available = Boolean.FALSE;
+    private String insertUid;
+    private Date insertTime;
+    private String updateUid;
+    private Date updateTime;
+    private int version;
+    @TableField(exist = false)
+    private List<SysRole> sysRoles;
 
-    private List<SysRole> roles;
-
-    public long getId() {
+    public String getId() {
         return id;
     }
-    public void setId(long id) {
+
+    public void setId(String id) {
         this.id = id;
     }
+
     public String getName() {
         return name;
     }
+
     public void setName(String name) {
         this.name = name;
     }
-    public String getResourceType() {
-        return resourceType;
+
+    public String getPid() {
+        return pid;
     }
-    public void setResourceType(String resourceType) {
-        this.resourceType = resourceType;
+
+    public void setPid(String pid) {
+        this.pid = pid;
     }
+
+    public int getZindex() {
+        return zindex;
+    }
+
+    public void setZindex(int zindex) {
+        this.zindex = zindex;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public String getDescrpt() {
+        return descrpt;
+    }
+
+    public void setDescrpt(String descrpt) {
+        this.descrpt = descrpt;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
+
     public String getUrl() {
         return url;
     }
+
     public void setUrl(String url) {
         this.url = url;
     }
-    public String getPermission() {
-        return permission;
+
+    public String getPath() {
+        return path;
     }
-    public void setPermission(String permission) {
-        this.permission = permission;
+
+    public void setPath(String path) {
+        this.path = path;
     }
-    public Long getParentId() {
-        return parentId;
+
+    public String getState() {
+        return state;
     }
-    public void setParentId(Long parentId) {
-        this.parentId = parentId;
+
+    public void setState(String state) {
+        this.state = state;
     }
-    public String getParentIds() {
-        return parentIds;
+
+    public String getInsertUid() {
+        return insertUid;
     }
-    public void setParentIds(String parentIds) {
-        this.parentIds = parentIds;
+
+    public void setInsertUid(String insertUid) {
+        this.insertUid = insertUid;
     }
-    public Boolean getAvailable() {
-        return available;
+
+    public Date getInsertTime() {
+        return insertTime;
     }
-    public void setAvailable(Boolean available) {
-        this.available = available;
+
+    public void setInsertTime(Date insertTime) {
+        this.insertTime = insertTime;
     }
-    public List<SysRole> getRoles() {
-        return roles;
+
+    public String getUpdateUid() {
+        return updateUid;
     }
-    public void setRoles(List<SysRole> roles) {
-        this.roles = roles;
+
+    public void setUpdateUid(String updateUid) {
+        this.updateUid = updateUid;
     }
-    @Override
-    public String toString() {
-        return "SysPermission [id=" + id + ", name=" + name + ", resourceType=" + resourceType + ", url=" + url
-                + ", permission=" + permission + ", parentId=" + parentId + ", parentIds=" + parentIds + ", available="
-                + available + ", roles=" + roles + "]";
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
+    }
+
+    public List<SysRole> getSysRoles() {
+        return sysRoles;
+    }
+
+    public void setSysRoles(List<SysRole> sysRoles) {
+        this.sysRoles = sysRoles;
     }
 }

@@ -12,8 +12,8 @@ import java.util.List;
 public class UserInfo implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    @TableId(type = IdType.AUTO)
-    private long uid;//用户id;
+    @TableId(type = IdType.UUID)
+    private String uid;//用户id;
 
     private String username;//账号.
 
@@ -27,22 +27,22 @@ public class UserInfo implements Serializable {
     private boolean state;//用户状态,0:创建未认证（比如没有激活，没有输入验证码等等）--等待验证的用户 , 1:正常状态,2：用户被锁定.
 
 @TableField(exist = false)
-    private List<SysRole> roleList;// 一个用户具有多个角色
+    private List<SysRole1> roleList;// 一个用户具有多个角色
 
 
-    public List<SysRole> getRoleList() {
+    public List<SysRole1> getRoleList() {
         return roleList;
     }
 
-    public void setRoleList(List<SysRole> roleList) {
+    public void setRoleList(List<SysRole1> roleList) {
         this.roleList = roleList;
     }
 
-    public long getUid() {
+    public String getUid() {
         return uid;
     }
 
-    public void setUid(long uid) {
+    public void setUid(String uid) {
         this.uid = uid;
     }
 

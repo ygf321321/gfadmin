@@ -1,8 +1,11 @@
 package com.gf.shirodemo2.config;
 
-import com.gf.shirodemo2.bean.SysPermission;
-import com.gf.shirodemo2.bean.SysRole;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.gf.shirodemo2.bean.SysPermission1;
+import com.gf.shirodemo2.bean.SysRole1;
+import com.gf.shirodemo2.bean.SysUser;
 import com.gf.shirodemo2.bean.UserInfo;
+import com.gf.shirodemo2.service.SysUserService;
 import com.gf.shirodemo2.service.UserInfoService;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
@@ -15,15 +18,16 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.List;
-
 /**
  *  身份校验核心类;
  */
 public class MyShiroRealm  extends AuthorizingRealm {
 
+//    @Autowired
+//    private UserInfoService userInfoService;
+
     @Autowired
-    private UserInfoService userInfoService;
+    private SysUserService sysUserService;
     /**
      * 认证信息.(身份验证)
      * Authentication 是用来验证用户身份
@@ -41,9 +45,13 @@ public class MyShiroRealm  extends AuthorizingRealm {
 
         //通过username从数据库中查找 User对象，如果找到，没找到.
         //实际项目中，这里可以根据实际情况做缓存，如果不做，Shiro自己也是有时间间隔机制，2分钟内不会重复执行该方法
-        UserInfo userInfo = userInfoService.findByUsername(username);
-        System.out.println("----->>userInfo="+userInfo);
-        if(userInfo == null){
+//        UserInfo userInfo = userInfoService.findByUsername(username);
+        QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("username",username);
+        SysUser sysUser = (SysUser) sysUserService.getOne(queryWrapper);
+        System.out.println(queryWrapper.getSqlSegment());
+//        System.out.println("----->>userInfo="+userInfo);
+        if(sysUser == null){
             return null;
         }
 
@@ -60,9 +68,9 @@ public class MyShiroRealm  extends AuthorizingRealm {
         //加密方式;
         //交给AuthenticatingRealm使用CredentialsMatcher进行密码匹配，如果觉得人家的不好可以自定义实现
         SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(
-                userInfo, //用户名
-                userInfo.getPassword(), //密码
-                ByteSource.Util.bytes(userInfo.getCredentialsSalt()),//salt=username+salt
+                sysUser, //用户名
+                sysUser.getPassword(), //密码
+                ByteSource.Util.bytes(sysUser.getCredentialsSalt()),//salt=username+salt
                 getName()  //realm name
         );
 
@@ -105,7 +113,8 @@ public class MyShiroRealm  extends AuthorizingRealm {
         System.out.println("权限配置-->MyShiroRealm.doGetAuthorizationInfo()");
 
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
-        UserInfo userInfo  = (UserInfo)principals.getPrimaryPrincipal();
+//        UserInfo userInfo  = (UserInfo)principals.getPrimaryPrincipal();
+        SysUser sysUser  = (SysUser)principals.getPrimaryPrincipal();
 
         //实际项目中，这里可以根据实际情况做缓存，如果不做，Shiro自己也是有时间间隔机制，2分钟内不会重复执行该方法
 //     UserInfo userInfo = userInfoService.findByUsername(username)
@@ -124,17 +133,17 @@ public class MyShiroRealm  extends AuthorizingRealm {
         //设置角色信息.
         //支持 Set集合,
         //用户的角色对应的所有权限，如果只使用角色定义访问权限，下面的四行可以不要
-//        List<SysRole> roleList=userInfo.getRoleList();
-//        for (SysRole role : roleList) {
+//        List<SysRole1> roleList=userInfo.getRoleList();
+//        for (SysRole1 role : roleList) {
 //
 ////            authorizationInfo.addStringPermissions(role.getPermissionsName());
 //        }
-        for(SysRole role:userInfo.getRoleList()){
+      /*  for(SysRole1 role:userInfo.getRoleList()){
             authorizationInfo.addRole(role.getRole());
-            for(SysPermission p:role.getPermissions()){
+            for(SysPermission1 p:role.getPermissions()){
                 authorizationInfo.addStringPermission(p.getPermission());
             }
-        }
+        }*/
 
         //设置权限信息.
 //     authorizationInfo.setStringPermissions(getStringPermissions(userInfo.getRoleList()));
