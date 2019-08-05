@@ -64,7 +64,7 @@
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> 主页</a></li>
-        <li class="active">用户管理</li>
+        <li class="active">角色管理</li>
       </ol>
     </section>
 
@@ -85,7 +85,7 @@
               <!--toolbar-->
 
               <div id="toolbar">
-                <a class="btn btn-primary" th:href="@{/userInfo/userAdd}">新增</a>
+                <a class="btn btn-primary" th:href="@{/sysrole/roleAdd}">新增</a>
               </div>
               <!--table-->
               <table  id="ArbetTable">
@@ -224,7 +224,7 @@
             queryParamsType:'undefined',
             totalField:'total',//替换返回总条数key值
             dataField:'records',//替换返回数据列表key值
-            url: '/userInfo/getusers',         //请求后台的URL（*）
+            url: '/sysrole/getRoles',         //请求后台的URL（*）
             method: 'get',                      //请求方式（*）
             toolbar: '#toolbar',                //工具按钮用哪个容器
             striped: true,                      //是否显示行间隔色
@@ -258,23 +258,23 @@
                     title: 'ID',
                     sortable:true
                 }, {
-                    field: 'username',
-                    title: '账号',
+                    field: 'code',
+                    title: '角色编码',
                     sortable:true
                 }, {
-                    field: 'nickname',
-                    title: '姓名',
+                    field: 'name',
+                    title: '角色名',
                     sortable:true
                 },
                 {
-                    field: 'email',
-                    title: 'email',
+                    field: 'state',
+                    title: '状态',
                     sortable:true
                 },
                 {
-                    field: 'mobile',
-                    title: '电话',
-                    sortable:true
+                    field: 'descrpt',
+                    title: '描述',
+                    sortable:false
                 },
 
                 {

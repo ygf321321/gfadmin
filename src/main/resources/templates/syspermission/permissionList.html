@@ -31,6 +31,8 @@
    <!--bootstrap-table-->
   <link rel="stylesheet"  href="/static/bower_components/bootstrap-table/bootstrap-table.css" th:href="@{/static/bower_components/bootstrap-table/bootstrap-table.css}" >
 
+
+  <link rel="stylesheet"  href="https://cdnjs.cloudflare.com/ajax/libs/jquery-treegrid/0.2.0/css/jquery.treegrid.min.css" >
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
   <!--[if lt IE 9]>
@@ -64,7 +66,7 @@
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> 主页</a></li>
-        <li class="active">用户管理</li>
+        <li class="active">角色管理</li>
       </ol>
     </section>
 
@@ -85,7 +87,7 @@
               <!--toolbar-->
 
               <div id="toolbar">
-                <a class="btn btn-primary" th:href="@{/userInfo/userAdd}">新增</a>
+                <a class="btn btn-primary" th:href="@{/sysrole/roleAdd}">新增</a>
               </div>
               <!--table-->
               <table  id="ArbetTable">
@@ -161,9 +163,6 @@
 <script src="/static/bower_components/bootstrap-table/bootstrap-table.js" th:src="@{/static/bower_components/bootstrap-table/bootstrap-table.js}"></script>
 <script src="/static/bower_components/bootstrap-table/locale/bootstrap-table-zh-CN.js" th:src="@{/static/bower_components/bootstrap-table/locale/bootstrap-table-zh-CN.js}"></script>
 
-
-
-
   <!--bootstrap-table-export-->
 <script src="/static/bower_components/FileSaver/FileSaver.min.js" th:src="@{/static/bower_components/FileSaver/FileSaver.min.js}"></script>
 <script src="/static/bower_components/js-xlsx/xlsx.core.min.js" th:src="@{/static/bower_components/js-xlsx/xlsx.core.min.js}"></script>
@@ -172,9 +171,16 @@
 <script src="/static/bower_components/es6-promise/es6-promise.auto.min.js" th:src="@{/static/bower_components/es6-promise/es6-promise.auto.min.js}"></script>
 <script src="/static/bower_components/html2canvas/html2canvas.min.js" th:src="@{/static/bower_components/html2canvas/html2canvas.min.js}"></script>
 <script src="/static/bower_components/tableExport/tableExport.min.js" th:src="@{/static/bower_components/tableExport/tableExport.min.js}"></script>
-
 <script src="/static/bower_components/export/bootstrap-table-export.js" th:src="@{/static/bower_components/export/bootstrap-table-export.js}"></script>
 
+<!--bootstrap-table tree-->
+
+
+<script src="/static/bower_components/bootstrap-table/extensions/jquery-treegrid/jquery.treegrid.js" th:src="@{/static/bower_components/bootstrap-table/extensions/jquery-treegrid/jquery.treegrid.js}"></script>
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-treegrid/0.2.0/js/jquery.treegrid.min.js" ></script>-->
+
+<script src="/static/bower_components/bootstrap-table/extensions/treegrid/bootstrap-table-treegrid.js" th:src="@{/static/bower_components/bootstrap-table/extensions/treegrid/bootstrap-table-treegrid.js}"></script>
+<script src="/static/bower_components/bootstrap-table/extensions/jquery-treegrid/jquery.treegrid.bootstrap3.js" th:src="@{/static/bower_components/bootstrap-table/extensions/jquery-treegrid/jquery.treegrid.bootstrap3.js}"></script>
 
 
 <script type="text/javascript">
@@ -189,13 +195,13 @@
     };
 
     //删除用户
-    function deleteUser(userid){
+    function deletePer(id){
         $.ajax({
             type: 'POST',
-            url: "/userInfo/del/"+userid,
+            url: "/syspermission/del/"+id,
             // data: data,
             success: function (r) {
-                if("succes"==r){
+                if("success"==r){
                     $('#ArbetTable').bootstrapTable('refresh');
                 }else {
                       alert('删除失败');
@@ -208,81 +214,82 @@
 
 
     function operateFormatter(value, row, index) {//赋予的参数
-        if(row.id!='1'){
+        if(row.id!='0'){
             return [
+                '<a class="btn btn-primary btn-sm" href="/syspermission/permissionAdd/'+row.id+'" >新增</a>',
                 '<a class="btn btn-primary btn-sm" href="/userInfo/edit/'+row.id+'" >编辑</a>',
-                '<a class="btn btn-primary btn-sm" href="#" onclick="deleteUser(\''+row.id+'\')">删除</a>'
+                '<a class="btn btn-primary btn-sm" href="#" onclick="deletePer(\''+row.id+'\')">删除</a>'
             ].join('');
         }else {
-            return '<button class="btn btn-primary btn-sm" href="#" >编辑</button>';
+            '<a class="btn btn-primary btn-sm" href="/syspermission/permissionAdd/'+row.id+'" >新增</a>',
+            '<a class="btn btn-primary btn-sm" href="/userInfo/edit/'+row.id+'" >编辑</a>'
         }
 
     }
 
     $(document).ready(function () {
-        $('#ArbetTable').bootstrapTable({
+        var $table=$('#ArbetTable');
+        $table.bootstrapTable({
+            url: '/syspermission/getPermissions',
             queryParamsType:'undefined',
             totalField:'total',//替换返回总条数key值
             dataField:'records',//替换返回数据列表key值
-            url: '/userInfo/getusers',         //请求后台的URL（*）
-            method: 'get',                      //请求方式（*）
-            toolbar: '#toolbar',                //工具按钮用哪个容器
-            striped: true,                      //是否显示行间隔色
-            cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
-            pagination: true,                   //是否显示分页（*）
-            sortable: true   ,                  //是否启用排序
-            sortOrder: "asc",                   //排序方式
-            // queryParams: queryParams,//传递参数（*）
-            sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
-            pageNumber: 1,                       //初始化加载第一页，默认第一页
-            pageSize: 10,                       //每页的记录行数（*）
-            pageList: [10, 25, 50, 100],        //可供选择的每页的行数（*）
-            search: true,                       //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
-            contentType: "application/x-www-form-urlencoded",
-            strictSearch: true,
-            showColumns: true,                  //是否显示所有的列
-            showRefresh: true,                  //是否显示刷新按钮
-            minimumCountColumns: 2,             //最少允许的列数
-            clickToSelect: true,                //是否启用点击选中行
-            height: 700,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
-            uniqueId: "no",                     //每一行的唯一标识，一般为主键列
-            showToggle: true,                    //是否显示详细视图和列表视图的切换按钮
-            cardView: false,                    //是否显示详细视图
-            detailView: false,                   //是否显示父子表
-            showExport: true,//导出
-             //exportDataType: 'all',
-            showFooter:false,
+            striped: true,
+            sidePagination: 'server',
+            idField: 'id',
+            showColumns: true,
             columns: [
                 {
-                    field: 'id',
-                    title: 'ID',
-                    sortable:true
-                }, {
-                    field: 'username',
-                    title: '账号',
-                    sortable:true
-                }, {
-                    field: 'nickname',
-                    title: '姓名',
-                    sortable:true
+                    field: 'ck',
+                    checkbox: true
                 },
                 {
-                    field: 'email',
-                    title: 'email',
-                    sortable:true
+                    field: 'name',
+                    title: '名称'
                 },
                 {
-                    field: 'mobile',
-                    title: '电话',
-                    sortable:true
+                    field: 'status',
+                    title: '状态',
+                    sortable: true,
+                    align: 'center',
+                    formatter: 'statusFormatter'
                 },
-
+                {
+                    field: 'permissionValue',
+                    title: '权限值'
+                },
                 {
                     field: 'operate',
                     title: '操作',
                     formatter: operateFormatter //自定义方法，添加操作按钮
-                },
-            ]
+                }
+            ],
+            treeShowField: 'name',
+            parentIdField: 'pid',
+            onLoadSuccess: function(data) {
+                $table.treegrid({
+                    initialState: 'collapsed',
+                    treeColumn: 1,
+                    expanderExpandedClass: 'glyphicon glyphicon-minus',
+                    expanderCollapsedClass: 'glyphicon glyphicon-plus',
+                    onChange: function() {
+                        $table.bootstrapTable('resetWidth');
+                    }
+                });
+            },
+            onPostBody: function() {
+                var columns = $table.bootstrapTable('getOptions').columns;
+
+                if (columns && columns[0][1].visible) {
+                    $table.treegrid({
+                        treeColumn: 1,
+                        onChange: function() {
+                            $table.bootstrapTable('resetWidth');
+                        }
+                    });
+                }
+            }
+
             // ,
             // rowStyle: function (row, index) {
             //     var classesArr = ['success', 'info'];
