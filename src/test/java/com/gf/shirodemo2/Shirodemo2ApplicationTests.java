@@ -19,7 +19,7 @@ public class Shirodemo2ApplicationTests {
 	public void password() {
 		String hashAlgorithmName = "MD5";
 		String credentials = "123456";
-		String salt="ygf";
+		String salt="youxiaoyu";
 		int hashIterations = 2;
 		Object obj = new SimpleHash(hashAlgorithmName, credentials, salt, hashIterations);
 		System.out.println("密码加密:"+obj);
